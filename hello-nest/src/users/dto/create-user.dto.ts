@@ -1,5 +1,3 @@
-import { IAllUsersOutput, IUserOutput } from '../interfaces/user.interface';
-
 export class CreateUserDto {
   login: string;
   password: string;

@@ -1,10 +1,9 @@
-import { Controller, Delete, HttpCode, Param, Res } from '@nestjs/common';
-import { Response } from 'express';
+import { Controller, Delete, HttpCode } from '@nestjs/common';
 
 @Controller(`testing`)
 export class TestingController {
   constructor() {
-    //    private readonly  blogsService: BlogsService // private readonly  blogsQueryRepository: BlogsQueryRepository //   private readonly  postsService: PostsService // private readonly  postsQueryRepository: PostsQueryRepo
+    //    private readonly  blogsService: BlogsService // private readonly  blogsQueryRepository: BlogsQueryRepository //   private readonly  postsService: CommentsService // private readonly  postsQueryRepository: PostsQueryRepo
   }
 
   @Delete('all-data')

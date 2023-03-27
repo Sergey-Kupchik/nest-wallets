@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
-import add from 'date-fns/add';
 import {
   IAllUsersOutput,
   IEmailHashInfo,
@@ -22,7 +21,7 @@ export class UsersService {
         id: uuidv4(),
         login: createUserDto.login,
         email: createUserDto.email.toLowerCase(),
-        hash: 'await this._hashPassword(createUserDto.password) ',
+        hash: 'await this._hashPassword(createUserDto.password)',
         createdAt: new Date().toISOString(),
         invalidRefreshTokens: [],
       },
@@ -35,7 +34,7 @@ export class UsersService {
     // await this.usersRepository.createUser(newUser);
     this.users.push(user);
     // await this.likesService.createInstance(newUser.accountData.id)
-    const userOutput = await this.findUserById(user.accountData.id);
+    const userOutput = await this.findById(user.accountData.id);
     return userOutput;
   }
 
@@ -47,7 +46,7 @@ export class UsersService {
     const isMatch = await bcrypt.compare(password, hash);
     return isMatch;
   }
-  async findUserById(id: string): Promise<IUserOutput | null> {
+  async findById(id: string): Promise<IUserOutput | null> {
     // const result = await this.usersRepository.findUserById(id);
     const result = this.users.find((u) => u.accountData.id === id);
     if (result) {
@@ -106,11 +105,11 @@ export class UsersService {
   }
   async deleteUserById(id: string): Promise<boolean> {
     //const result = await this.usersRepository.deleteUserById(id);
-    const user = await this.findUserById(id);
+    const user = await this.findById(id);
     if (!user) return false;
     const filteredUsers = this.users.filter((u) => u.accountData.id !== id);
     this.users = filteredUsers as unknown as IUser[];
-    return (await this.findUserById(id)) === null ? true : false;
+    return (await this.findById(id)) === null ? true : false;
   }
   async confirmUser(id: string): Promise<boolean> {
     // const idConfirmed: boolean = await this.usersRepository.confirmUser(id);
@@ -140,7 +139,7 @@ export class UsersService {
     this.users = updatedUsers as unknown as IUser[];
     return null;
   }
-  async findAll(filterParamsDto: FilterParamsDto): Promise<IAllUsersOutput> {
+  async getAll(filterParamsDto: FilterParamsDto): Promise<IAllUsersOutput> {
     // const user = await this.usersRepository.findUserByConfirmationCode(code);
     const allUsers = {
       pagesCount: Math.ceil(this.users.length / filterParamsDto.pageSize),
